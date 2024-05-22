@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./partials/head") %>
+
+    <title>Home Page</title>
+ 
+
+ 
+</head>
+<body>
+    
+    <%- include("./partials/navbar") %>
+    <div class="container">
+    <div class="container mt-4">
+        <h1><%= blog.title %></h1>
+      <!--  <img src="<%= blog.coverImageURL %>" alt="coverImage"> -->
+        
+        <pre><%= blog.body  %></pre>
+    </div>
+   
+    <div class="container">
+        <h6>Author - <%= blog.createdBy.fullName %></h6>
+    <% if (locals.user) { %>
+        <div class="container mt-3">
+    <form action="/blog/comment/<%= blog._id %>" method="post">
+        <div class="mb-3">
+          <input type="text" class="form-control" id="comment" aria-describedby="comment" name="content" placeholder="Write your Comment">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Commentt</button>
+      </form>
+    </div>
+        
+    <%} %>
+    </div>
+    
+    </div>
+    <%- include("./partials/scripts") %>
+ 
+</body>
+</html>
