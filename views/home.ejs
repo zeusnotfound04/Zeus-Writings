@@ -16,7 +16,8 @@
         <% blogs.forEach(blog => { %>
             <div class="col">
             <div class="card col" style="width: 18rem;">
-                <!--<img src="<%= blog.coverImageURL %>" class="card-img-top" alt="..."> -->
+                <img src="<%= blog.coverImageURL %>" class="card-img-top" alt="...">
+                <p> <%= blog.coverImageURL %></p>
                 <div class="card-body">
                   <h5 class="card-title"><%= blog.title %></h5>
                   

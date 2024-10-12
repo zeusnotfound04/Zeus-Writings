@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
         cb( null , filename)
     }
 })
-
+ 
 const upload = multer({storage })
 
 router.get("/addBlog" , (req , res)=>{
@@ -51,12 +51,18 @@ router.post("/addblog" ,  upload.single("coverImage"), async (req, res)=>{
 router.get("/:id" , async (req, res)=>{
     console.log(req.params.id)
     const blog = await Blog.findById(req.params.id).populate("createdBy")
-    const comment = await Comment.find({_id : req.params.id}).populate("createdBy")
+    const comment = await Comment.find({ blogId : req.params.id}).populate("createdBy")
+    if (comment.length === 0) {
+        console.log(`No comments found `);
+    } else {
+        console.log(`Found comments: ${comment}`);
+    }
+    
     console.log(comment)
     res.render("blog" , {
         user : req.user,
         blog : blog,
-        comments : comment
+        comments : comment,
     })
 
 })
@@ -69,9 +75,7 @@ router.post("/comment/:blogId" , async (req, res)=>{
         createdBy : req.user._id
     })
 
+
     res.redirect(`/blog/${req.params.blogId}`)
-
 })
-
-
 module.exports = router;
