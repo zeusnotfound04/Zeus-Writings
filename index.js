@@ -21,7 +21,7 @@ app.set("views" , path.resolve("./views"))
 app.use(express.json());
 app.use("/user" , userRoutes)
 app.use("/blog" , blogRoutes)
-app.use(express.urlencoded({ extended: true }))//to handle form data..
+app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(checkForAuthenticationCookie("token"))
 app.use(express.static(path.join(__dirname, "./public/")));
@@ -35,29 +35,6 @@ app.use(express.static(path.join(__dirname, "./public/")));
 app.get("/", async (req, res) => {
     try {
         const allBlogs = await Blog.find({});
-        const basePath = path.resolve('F:/VISHESH/VS code/JavaScript/NodeJS/Prac. Project/Blog/public');
-
-        // Process each blog to adjust the coverImageURL
-        allBlogs.forEach(blog => {
-            if (blog.coverImageURL) {
-                const fullImagePath = path.resolve(blog.coverImageURL);
-                let relativeImagePath = path.relative(basePath, fullImagePath);
-
-                // Normalize the path to use forward slashes for URL
-                relativeImagePath = relativeImagePath.split(path.sep).join('/');
-
-                // Remove leading upload if present
-                if (relativeImagePath.startsWith('upload/')) {
-                    blog.coverImageURL = `/${relativeImagePath}`;
-                } else {
-                    blog.coverImageURL = `/upload/${relativeImagePath}`;
-                }
-            } else {
-                // Handle case where coverImageURL is missing or empty
-                blog.coverImageURL = '/path/to/default/image.jpg'; // Provide a default image or leave it empty
-            }
-        });
-
         console.log(req.user);
         res.render("home", { user: req.user, blogs: allBlogs });
     } catch (error) {
